@@ -1,15 +1,27 @@
 angular.module('mainController', ['authServices', 'userServices'])
 
 // Controller: mainCtrl is used to handle login and main index functions (stuff that should run on every page)  
-.controller('mainCtrl', function(Auth, $timeout, $location, $rootScope, $window, $interval, User, AuthToken, $scope) {
+.controller('mainCtrl', function(Auth, $timeout, $location, $rootScope, $routeParams, $window, $interval, User, AuthToken, $scope) {
     var app = this;
     app.loadme = false; // Hide main HTML until data is obtained in AngularJS
+    var param1 = $routeParams.param1;
+    app.isAdmin = false;
+    app.users = [];
+    if(param1 == 'admin'){
+        app.isAdmin = true;
+    }else{
+        app.isAdmin = false;
+    }
+    
+    console.log(param1)
     if ($window.location.pathname === '/') app.home = true; // Check if user is on home page to show home page div
 
     // Check if user's session has expired upon opening page for the first time
     if (Auth.isLoggedIn()) {
         // Check if a the token expired
         Auth.getUser().then(function(data) {
+            console.log(data.data)
+            app.isAdmin = data.data.isAdmin;
             // Check if the returned user is undefined (expired)
             if (data.data.username === undefined) {
                 Auth.logout(); // Log the user out
@@ -19,6 +31,11 @@ angular.module('mainController', ['authServices', 'userServices'])
             }
         });
     }
+
+    User.getUsers().then(function(data) {
+       console.log(data)
+       app.users = data.data;
+    });
 
     // Function to run an interval that checks if the user's token has expired
     app.checkSession = function() {
@@ -173,13 +190,25 @@ angular.module('mainController', ['authServices', 'userServices'])
         // Function that performs login
         Auth.login(app.loginData).then(function(data) {
             // Check if login was successful 
-            if (data.data.success) {
+            if (data.data.success && !data.data.isAdmin) {
                 app.loading = false; // Stop bootstrap loading icon
                 $scope.alert = 'alert alert-success'; // Set ng class
                 app.successMsg = data.data.message + '...Redirecting'; // Create Success Message then redirect
                 // Redirect to home page after two milliseconds (2 seconds)
                 $timeout(function() {
                     $location.path('/'); // Redirect to home
+                    app.loginData = ''; // Clear login form
+                    app.successMsg = false; // CLear success message
+                    app.disabled = false; // Enable form on submission
+                    app.checkSession(); // Activate checking of session
+                }, 2000);
+            } else if(data.data.success && data.data.isAdmin){
+                app.loading = false; // Stop bootstrap loading icon
+                $scope.alert = 'alert alert-success'; // Set ng class
+                app.successMsg = data.data.message + '...Redirecting'; // Create Success Message then redirect
+                // Redirect to home page after two milliseconds (2 seconds)
+                $timeout(function() {
+                    $location.path('/management'); // Redirect to home
                     app.loginData = ''; // Clear login form
                     app.successMsg = false; // CLear success message
                     app.disabled = false; // Enable form on submission

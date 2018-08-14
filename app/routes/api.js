@@ -49,7 +49,7 @@ module.exports = function(router) {
     // Route for user logins
     router.post('/authenticate', function(req, res) {
         var loginUser = (req.body.username).toLowerCase(); // Ensure username is checked in lowercase against database
-        User.findOne({ username: loginUser }).select('email username password active').exec(function(err, user) {
+        User.findOne({ username: loginUser }).select('email username password isAdmin').exec(function(err, user) {
             if (err) {
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
@@ -65,8 +65,9 @@ module.exports = function(router) {
                         if (!validPassword) {
                             res.json({ success: false, message: 'Could not authenticate password' }); // Password does not match password in database
                         } else {
-                            var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Logged in: Give user token
-                            res.json({ success: true, message: 'User authenticated!', token: token }); // Return token in JSON object to controller
+                            console.log(user)
+                            var token = jwt.sign({ username: user.username, email: user.email, isAdmin: user.isAdmin  }, secret, { expiresIn: '24h' }); // Logged in: Give user token
+                            res.json({ success: true, message: 'User authenticated!', token: token, isAdmin: user.isAdmin }); // Return token in JSON object to controller
                         }
                     }
                 }
@@ -95,8 +96,20 @@ module.exports = function(router) {
         }
     });
 
+    router.get('/users', function(req, res) {
+        User.find({}).select('email username password isAdmin').exec(function(err, user) {
+            if (err) {
+                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
+            } else {
+                console.log(user)
+                res.send(user)
+            }
+        })
+
+    })
     // Route to get the currently logged in user    
     router.post('/me', function(req, res) {
+        console.log(req.decoded)
         res.send(req.decoded); // Return the token acquired from middleware
     });
 

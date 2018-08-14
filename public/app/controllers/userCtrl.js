@@ -5,17 +5,18 @@ angular.module('userControllers', ['userServices'])
 
     var app = this;
     var param1 = $routeParams.param1;
+    app.isAdmin = false;
+    if(param1 == 'admin'){
+        app.isAdmin = true;
+    }else{
+        app.isAdmin = false;
+    }
     console.log(param1)
     // Custom function that registers the user in the database      
     this.regUser = function(regData, valid) {
         app.disabled = true; // Disable the form when user submits to prevent multiple requests to server
         app.errorMsg = false; // Clear errorMsg each time user submits
-        app.isAdmin = false;
-        if(param1 == 'admin'){
-            app.isAdmin = true;
-        }else{
-            app.isAdmin = false;
-        }
+        
         // If form is valid and passwords match, attempt to create user         
         if (valid) {
             app.regData.name = app.regData.firstName + " " + app.regData.lastName; // Combine first and last name before submitting to database
