@@ -16,7 +16,7 @@ angular.module('userServices', [])
 
     // Get user to then edit
     userFactory.getUser = function(id) {
-        return $http.get('/api/edit/' + id);
+        return $http.get('/api/user/' + id);
     };
 
     // Delete a user
@@ -25,8 +25,8 @@ angular.module('userServices', [])
     };
 
     // Edit a user
-    userFactory.editUser = function(id) {
-        return $http.put('/api/edit', id);
+    userFactory.editUser = function(data) {
+        return $http.put('/api/user', data);
     };
 
     return userFactory; // Return userFactory object

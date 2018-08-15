@@ -5,6 +5,7 @@ angular.module('mainController', ['authServices', 'userServices'])
     var app = this;
     app.loadme = false; // Hide main HTML until data is obtained in AngularJS
     var param1 = $routeParams.param1;
+    var id = $routeParams.id;
     app.isAdmin = false;
     app.users = [];
     if(param1 == 'admin'){
@@ -30,9 +31,29 @@ angular.module('mainController', ['authServices', 'userServices'])
             }
         });
     }
+if(id){
+    User.getUser(id).then(function(data) {
+    
 
+    $scope.name = data.data.name;
+    $scope.username = data.data.username;
+    });
+
+
+}
+ 
+$scope.Update = function () {
+    $rootScope.loading = true;
+    var data = {
+        name: $scope.name,
+        username:$scope.username,
+        userid:id
+    }
+    User.editUser(data).then(function (d) {
+        $location.path('/management');
+    });
+};
     User.getUsers().then(function(data) {
-       console.log(data)
        app.users = data.data;
     });
 

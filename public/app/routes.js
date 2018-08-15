@@ -33,6 +33,12 @@ var app = angular.module('appRoutes', ['ngRoute'])
         templateUrl: 'app/views/pages/management/management.html',
         authenticated: true
     })
+
+    // Route: User Login
+    .when('/edit/:id', {
+        templateUrl: 'app/views/pages/management/edit.html',
+        authenticated: true
+    })
     
     .otherwise({ redirectTo: '/' }); // If user tries to access any other route, redirect to home page
 

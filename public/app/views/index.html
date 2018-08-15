@@ -62,9 +62,20 @@
                     <li class="">
                         <a ng-show="!main.isLoggedIn" class="page-scroll" href="/login">Login</a>
                     </li>
-                    <li class="">
-                        <a ng-show="!main.isLoggedIn" class="page-scroll" href="/register">Register</a>
+
+                    <li class="dropdown">
+                        <a ng-show="!main.isLoggedIn" class="page-scroll btn btn-secondary dropdown-toggle" type="button"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Register</a>
+                        <div class="dropdown-menu" style="padding-left: 5px;" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="/register" style="color:black;">User</a><br>
+                            <a class="dropdown-item" href="/register/admin" style="color:black;">Admin</a>
+                          </div>
                     </li>
+
+                   
+                  
+
+
+
                     <li class="">
                         <a ng-show="main.isLoggedIn" class="page-scroll" href="#" ng-click="main.logout();">Logout</a>
                     </li>

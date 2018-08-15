@@ -108,6 +108,30 @@ module.exports = function(router) {
 
     })
 
+    router.put('/user', function(req,res){
+        console.log(req.body)
+        User.update (
+            { _id : req.body.userid },
+            { $set : { name:req.body.name, username:req.body.username} },
+            function( err, result ) {
+                if ( err ) throw err;
+                res.send(result)
+            }
+        );
+    })
+    router.get('/user/:user_id', function(req, res) {
+        User.findOne({ _id: req.params.user_id}).select('username name password isAdmin').exec(function(err, user) {
+            if (err) {
+                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
+            } else {
+                console.log(user)
+                res.send(user)
+            }
+        })
+
+    })
+
+
     router.delete('/user/:user_id', function(req,res){
         User.remove({
             _id: req.params.user_id
