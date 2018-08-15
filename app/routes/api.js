@@ -97,7 +97,7 @@ module.exports = function(router) {
     });
 
     router.get('/users', function(req, res) {
-        User.find({}).select('email username password isAdmin').exec(function(err, user) {
+        User.find({}).select('email username name password isAdmin').exec(function(err, user) {
             if (err) {
                 res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
             } else {
@@ -107,27 +107,19 @@ module.exports = function(router) {
         })
 
     })
+
+    router.delete('/user/:user_id', function(req,res){
+        User.remove({
+            _id: req.params.user_id
+        }, function (err, user) {
+            if (err) return res.send(err);
+            res.json({ message: 'Deleted' });
+        });
+    })
     // Route to get the currently logged in user    
     router.post('/me', function(req, res) {
         console.log(req.decoded)
         res.send(req.decoded); // Return the token acquired from middleware
-    });
-
-    // Route to provide the user with a new token to renew session
-    router.get('/renewToken/:username', function(req, res) {
-        User.findOne({ username: req.params.username }).select('username email').exec(function(err, user) {
-            if (err) {
-                res.json({ success: false, message: 'Something went wrong. This error has been logged and will be addressed by our staff. We apologize for this inconvenience!' });
-            } else {
-                // Check if username was found in database
-                if (!user) {
-                    res.json({ success: false, message: 'No user was found' }); // Return error
-                } else {
-                    var newToken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' }); // Give user a new token
-                    res.json({ success: true, token: newToken }); // Return newToken in JSON object to controller
-                }
-            }
-        });
     });
 
     return router; // Return the router object to server

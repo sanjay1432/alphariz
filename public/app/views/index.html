@@ -89,7 +89,7 @@
                 <a ng-show="!main.isLoggedIn" href="/login" class="page-scroll btn btn-xl">Sign In</a>
                 <a ng-show="!main.isLoggedIn" href="/register" class="page-scroll btn twitterbtn">Register</a>
                 <a ng-show="main.isLoggedIn" href="#" ng-click="main.logout();" class="page-scroll btn btn-xl">Logout</a>
-                <a ng-show="main.isLoggedIn && main.authorized" href="/management" class="page-scroll btn facebookbtn">View</a>
+                <a ng-show="main.isLoggedIn && main.isAdmin" href="/management" class="page-scroll btn facebookbtn">Management</a>
 
             </div>
         </div>
@@ -108,7 +108,7 @@
     </section>
 
     <!-- Portfolio Grid Section -->
-    <section ng-show="main.home" id="portfolio" class="bg-light-gray">
+    <!-- <section ng-show="main.home" id="portfolio" class="bg-light-gray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -139,7 +139,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
   
     <!-- Bootstrap core JavaScript
     ================================================== -->

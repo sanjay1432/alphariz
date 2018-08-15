@@ -11,34 +11,27 @@
                 </div>
                 <!-- Heading -->
                 
-              
-              
-               
-                
-               
-              
-                
                 <!-- User Management Table -->
                 <div class="panel panel-primary">
                   
                     <!-- Start: Table -->
                     <table class="table">
                         <tr>
-                            <!-- <th>Name</th> -->
+                            <th>Name</th>
                             <th>Username</th>
                            
                         </tr>
-                        <tr ng-repeat="person in reg.users">
-                            <!-- <td>{{ person.name }}</td> -->
-                            <td>{{ person.username }}</td>
+                        <tr ng-repeat="user in reg.users">
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.username }}</td>
                             
                             <td>
                                 <!-- Edit Button -->
-                                <a href="/edit/{{ person._id }}">
+                                <a href="/edit/{{ user._id }}">
                                     <button type="button" class="btn btn-primary">Edit</button>
                                 </a>
                                 <!-- Delete Button -->
-                                <button type="button" ng-click="management.deleteUser(person.username);"  class="btn btn-danger">Delete</button>
+                                <button type="button" ng-click="reg.deleteUser(user._id);"  class="btn btn-danger">Delete</button>
                             </td>
                         </tr>
                         <!-- End: Table -->

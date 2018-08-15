@@ -6,11 +6,6 @@ var app = angular.module('appRoutes', ['ngRoute'])
     // AngularJS Route Handler
     $routeProvider
 
-    // Route: Home             
-        .when('/', {
-        templateUrl: 'app/views/pages/home.html'
-    })
-
 
     // Route: User Registration
     .when('/register', {

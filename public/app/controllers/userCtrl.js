@@ -11,7 +11,7 @@ angular.module('userControllers', ['userServices'])
     }else{
         app.isAdmin = false;
     }
-    console.log(param1)
+
     // Custom function that registers the user in the database      
     this.regUser = function(regData, valid) {
         app.disabled = true; // Disable the form when user submits to prevent multiple requests to server
@@ -51,7 +51,8 @@ angular.module('userControllers', ['userServices'])
             app.errorMsg = 'Please ensure form is filled our properly'; // Display error if valid returns false
         }
     };
-
+  
+  
     //  Custom function that checks if username is available for user to use    
     this.checkUsername = function(regData) {
         app.checkingUsername = true; // Start bootstrap loading icon
